@@ -10,21 +10,25 @@ export const CourseForm = ({ categoryData, onAdd }) => {
     name: "",
     summarize: "",
     category_id: "",
-    chapters: [
-      {
-        id: uuid(),
-        name: "",
-        summarize: "",
-        lessons: [
-          {
-            id: uuid(),
-            name: "",
-            content: "",
-          },
-        ],
-      },
-    ],
+    chapters: [],
   });
+
+  const [nestedForm, setNestedForm] = useState([
+    {
+      id: uuid(),
+      name: "",
+      summarize: "",
+      lessons: [
+        {
+          id: uuid(),
+          lname: "",
+          content: "",
+        },
+      ],
+    },
+  ]);
+
+  const [errors, setErrors] = useState({});
 
   const handleCourseFormChange = (e) => {
     const name = e.target.name;
@@ -33,18 +37,33 @@ export const CourseForm = ({ categoryData, onAdd }) => {
     setForm({ ...form, [name]: value });
   };
 
-  const handleChapterFormChange = (e, index) => {
+  const handleNestedFormChange = (e, index, lesIndex) => {
     const name = e.target.name;
     const value = e.target.value;
 
-    let chaptLists = [...form.chapters];
-    chaptLists[index][name] = value;
+    setNestedForm((prev) => {
+      const updatedForm = [...prev];
 
-    setForm({ ...form, chapters: chaptLists });
+      updatedForm[index][name] = value;
+
+      updatedForm[index] = {
+        ...updatedForm[index],
+        lessons: updatedForm[index].lessons.map((lesson, i) =>
+          i === lesIndex ? { ...lesson, [name]: value } : lesson
+        ),
+      };
+      return updatedForm;
+    });
   };
 
   const onClick = () => {
-    onAdd(form);
+    const data = {
+      ...form,
+      id: uuid(),
+      chapters: nestedForm,
+    };
+
+    onAdd(data);
     setCourses(courses.concat(form));
   };
 
@@ -56,38 +75,27 @@ export const CourseForm = ({ categoryData, onAdd }) => {
       lessons: [
         {
           id: uuid(),
-          name: "",
+          lname: "",
           content: "",
         },
       ],
     };
 
-    setForm((prev) => {
-      return {
-        ...prev,
-        chapters: [...prev.chapters, newChapter],
-      };
+    setNestedForm((prev) => {
+      return [...prev, newChapter];
     });
   };
 
-  // const onAddLesson = () => {
-  //   const newLesson = {
-  //     id: uuid(),
-  //     name: "",
-  //     content: "",
-  //   };
+  const removeChapter = (index) => {
+    let chapterLists = [...nestedForm];
+    chapterLists.splice(index, 1);
+    setNestedForm(chapterLists);
+  };
 
-  //   setForm((prev) => {
-  //     return {
-  //       ...prev,
-  //     };
-  //   });
-  // };
-
-  console.log("Course form", form);
+  console.log("nested form", nestedForm);
 
   return (
-    <div className=" shadow-lg bg-white p-3">
+    <div className=" shadow-lg bg-white p-3 mb-20">
       <div className=" text-xl font-semibold mb-4">New course</div>
       <div className="flex flex-col">
         <div className="flex flex-row w-full gap-3">
@@ -117,18 +125,22 @@ export const CourseForm = ({ categoryData, onAdd }) => {
 
         <div className="my-2 flex justify-between">
           <div className=" text-xl font-semibold mb-4">Chapter</div>
-          <Button onClick={onAddChapter}>Add new chapter</Button>
         </div>
-        <div className="grid grid-cols-2 gap-2">
-          {form?.chapters?.map((chapForm, index) => (
+        <div className="grid grid-cols-2 gap-3 ">
+          {nestedForm?.map((chapForm, index) => (
             <ChapterForm
               key={index}
               index={index}
               form={chapForm}
-              handleFormChange={handleChapterFormChange}
-              // onAddLesson={onAddLesson}
+              handleFormChange={handleNestedFormChange}
+              setNestedForm={setNestedForm}
+              removeChapter={removeChapter}
+              nestedForm={nestedForm}
             />
           ))}
+        </div>
+        <div className=" flex items-center justify-center p-4">
+          <Button onClick={onAddChapter}>Add new chapter</Button>
         </div>
       </div>
       <div className="my-4 items-center justify-center flex gap-5">

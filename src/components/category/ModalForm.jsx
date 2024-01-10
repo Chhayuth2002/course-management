@@ -1,10 +1,11 @@
 import { X } from "lucide-react";
 import { Button } from "../Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TextInput } from "../Input";
 
-export const ModalForm = ({ setIsShowModal, handleAdd }) => {
+export const ModalForm = ({ setIsShowModal, handleAdd, value }) => {
   const [form, setForm] = useState({ name: "", code: "" });
+  const [errors, setErrors] = useState({ name: "", code: "" });
 
   const handleFormChange = (e) => {
     const name = e.target.name;
@@ -22,9 +23,13 @@ export const ModalForm = ({ setIsShowModal, handleAdd }) => {
     setForm({ name: "", code: "" });
   };
 
+  useEffect(() => {
+    setErrors(value);
+  }, [value]);
+
   return (
     <div className=" bg-black/50 overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 h-full items-center justify-center flex">
-      <div className="relative p-4  w-2/4  h-full md:h-auto">
+      <div className="relative p-4  w-1/4  h-full md:h-auto">
         <div className="relative bg-white rounded-lg shadow">
           <Button
             onClick={() => setIsShowModal(false)}

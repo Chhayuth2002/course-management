@@ -3,14 +3,13 @@ import { Button } from "../Button";
 import { useState } from "react";
 import { ModalForm } from "./ModalForm";
 
-export const CategoryTable = ({
-  data,
-  onDelete,
-  selectedItem,
-  entity,
-  onAdd,
-}) => {
+export const CategoryTable = ({ data, onDelete, entity, onAdd }) => {
   const [isShowModal, setIsShowModal] = useState(false);
+  const [selectedItem, setSelectedItem] = useState({});
+
+  const onSelectedCategory = (id) => {
+    setSelectedItem(data.find((category) => category.id === id));
+  };
 
   const handleAdd = (param) => {
     onAdd(param);
@@ -18,7 +17,11 @@ export const CategoryTable = ({
   return (
     <>
       {isShowModal && (
-        <ModalForm setIsShowModal={setIsShowModal} handleAdd={handleAdd} />
+        <ModalForm
+          value={selectedItem}
+          setIsShowModal={setIsShowModal}
+          handleAdd={handleAdd}
+        />
       )}
       <div className="flex justify-between">
         <h1 className="text-xl font-semibold">Category Management</h1>

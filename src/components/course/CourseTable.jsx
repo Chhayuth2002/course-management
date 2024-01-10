@@ -31,8 +31,8 @@ export const CourseTable = ({ data, onDelete, selectedItem, entity }) => {
                       <td className="px-3 py-4">{d.name}</td>
                       <td className="px-3 py-4">{d.summarize}</td>
                       <td className="px-3 py-4">{d.category}</td>
-                      <td className="px-3 py-4">{d.total_chapter}</td>
-                      <td className="px-3 py-4">{d.total_lesson}</td>
+                      <td className="px-3 py-4">{d.total_chapters}</td>
+                      <td className="px-3 py-4">{d.total_lessons}</td>
                       <td className="px-3 py-4">
                         <Button
                           onClick={() => selectedItem(d.id, entity)}

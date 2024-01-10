@@ -4,14 +4,13 @@ import uuid from "react-uuid";
 import { CourseTable } from "./components/course/CourseTable";
 import { CourseForm } from "./components/course/CourseForm";
 import categoryData from "./data/categories";
+import coursesData from "./data/courses";
 
 function App() {
   const [categories, setCategories] = useState(categoryData);
-  const [courses, setCourses] = useState([]);
+  const [courses, setCourses] = useState(coursesData);
 
-  const courseData = useMemo(() => {}, []);
-
-  // Add
+  // Add category
   const onAddCategory = (form) => {
     const newCategory = {
       id: uuid(),
@@ -19,8 +18,34 @@ function App() {
     };
 
     setCategories(categories.concat(newCategory));
-    console.log("added", form);
   };
+
+  // Edit category
+  const onEditCategory = (form) => {};
+
+  //
+
+  const data = useMemo(() => {
+    const result = courses.map((course) => {
+      // const category = categories.find(
+      //   (category) => category.id === course.category_id
+      // ).name;
+
+      const totalLessons = course.chapters.reduce(
+        (sum, chapter) => sum + chapter.lessons.length,
+        0
+      );
+
+      return {
+        ...course,
+        // category,
+        total_chapters: course.chapters.length,
+        total_lessons: totalLessons,
+      };
+    });
+
+    return result;
+  }, [courses]);
 
   const onAddCourse = (form) => {
     setCourses(courses.concat(form));
@@ -36,7 +61,7 @@ function App() {
       <div className="mx-20">
         <div className="w-full">
           <CategoryTable onAdd={onAddCategory} data={categories} />
-          <CourseTable data={courseData} />
+          <CourseTable data={data} />
           <CourseForm categoryData={categories} onAdd={onAddCourse} />
         </div>
       </div>
