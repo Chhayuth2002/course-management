@@ -9,7 +9,6 @@ export const CourseForm = ({ categoryData, onAdd }) => {
     name: "",
     summarize: "",
     category_id: "",
-    chapters: [],
   });
 
   const [nestedForm, setNestedForm] = useState([
@@ -34,6 +33,10 @@ export const CourseForm = ({ categoryData, onAdd }) => {
     setForm({ ...form, [name]: value });
   };
 
+  const [errors, setErrors] = useState({});
+  const [NestedError, setNestedError] = useState({});
+
+  // Handle chapter and lesson form change
   const handleNestedFormChange = (e, index, lesIndex) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -53,13 +56,35 @@ export const CourseForm = ({ categoryData, onAdd }) => {
     });
   };
 
+  // Add
   const onClick = () => {
+    const checkError = {
+      name: !form.name ? "Course name is required" : "",
+      category_id: !form.category_id ? "Category is required" : "",
+      summarize: !form.summarize ? "Course summarize is required" : "",
+      // chapters: nestedForm.map((chapter) => {
+      //   const checkLessonError = chapter.lessons.map((lesson) => {
+      //     return {
+      //       name: lesson.name ? "Lesson name is required" : "",
+      //       content: lesson.content ? "Lesson content is required" : "",
+      //     };
+      //   });
+
+      //   return {
+      //     name: chapter.name ? "Chapter name is required" : "",
+      //     summarize: chapter.summarize ? "Chapter summarize is required" : "",
+      //     lessons: checkLessonError,
+      //   };
+      // }),
+    };
+
+    setErrors(checkError);
+
     const data = {
       ...form,
       id: uuid(),
       chapters: nestedForm,
     };
-
     onAdd(data);
 
     onReset();
@@ -119,15 +144,17 @@ export const CourseForm = ({ categoryData, onAdd }) => {
             name="name"
             value={form.name}
             onChange={handleCourseFormChange}
+            error={errors.name}
           />
           <Dropdown
-            className="w-full"
             data={categoryData}
             onChange={handleCourseFormChange}
             label="Category"
+            className="w-full"
             name="category_id"
             value={form.category_id}
             placeHolder="Select a category"
+            error={errors.category_id}
           />
         </div>
         <TextArea
@@ -135,6 +162,7 @@ export const CourseForm = ({ categoryData, onAdd }) => {
           onChange={handleCourseFormChange}
           value={form.summarize}
           name="summarize"
+          error={errors.summarize}
         />
 
         <div className="my-2 flex justify-between">

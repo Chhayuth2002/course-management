@@ -1,12 +1,33 @@
 import { Edit, Trash, View } from "lucide-react";
 import { Button } from "../Button";
+import { useState } from "react";
+// import { CourseForm } from "./CourseForm";
+import { CourseDetail } from "./CourseDetail";
 
-export const CourseTable = ({ data, onDelete, selectedItem, entity }) => {
+export const CourseTable = ({
+  data,
+  onDelete,
+  entity,
+  onEdit,
+  // onAddCourse,
+  // categories,
+}) => {
+  const [isShowModal, setIsShowModal] = useState(false);
+  const [detailData, setDetailData] = useState({});
+
+  const onSelectedCourse = (id) => {
+    setDetailData(data.find((item) => item.id === id));
+    setIsShowModal(true);
+  };
+
   return (
     <>
+      {isShowModal && (
+        <CourseDetail setIsShowModal={setIsShowModal} data={detailData} />
+      )}
       <div className="flex justify-between">
         <h1 className="text-xl font-semibold">Course Management</h1>
-        <Button onClick={() => {}}>Add new course</Button>
+        <Button onClick={() => setIsShowModal(true)}>Add new course</Button>
       </div>
       <div className="flex justify-center my-5 border-b-2 bg-white shadow-md rounded-xl">
         <div className="flex flex-col items-center justify-center w-full">
@@ -35,14 +56,14 @@ export const CourseTable = ({ data, onDelete, selectedItem, entity }) => {
                       <td className="px-3 py-4">{d.total_lessons}</td>
                       <td className="px-3 py-4">
                         <Button
-                          onClick={() => selectedItem(d.id, entity)}
+                          onClick={() => onSelectedCourse(d.id)}
                           variant="icon"
                         >
                           <View />
                         </Button>
 
                         <Button
-                          onClick={() => selectedItem(d.id, entity)}
+                          onClick={() => onEdit(d.id, entity)}
                           className="mx-2 text-blue-400"
                           variant="icon"
                         >

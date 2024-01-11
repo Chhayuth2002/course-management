@@ -39,6 +39,9 @@ function App() {
   const onDeleteCourse = (id) => {
     setCourses((prev) => prev.filter((item) => item.id !== id));
   };
+
+  const onEditCourse = (id) => {};
+
   const data = useMemo(() => {
     const result = courses.map((course) => {
       // const category = categories.find(
