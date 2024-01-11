@@ -9,7 +9,6 @@ export const LessonForm = ({
   chapIndex,
   removeLesson,
 }) => {
-  // console.log("Lesson form ", form);
   return (
     <>
       <div className="gap-2 my-3">
@@ -27,7 +26,7 @@ export const LessonForm = ({
               className="w-full"
               label="Name"
               name="lname"
-              value={form.name}
+              value={form.lname}
               onChange={(e) => handleFormChange(e, chapIndex, lessIndex)}
             />
             <TextArea

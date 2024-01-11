@@ -1,27 +1,40 @@
 import { useMemo, useState } from "react";
 import { CategoryTable } from "./components/category/CategoryTable";
-import uuid from "react-uuid";
 import { CourseTable } from "./components/course/CourseTable";
 import { CourseForm } from "./components/course/CourseForm";
-import categoryData from "./data/categories";
 import coursesData from "./data/courses";
-
+import uuid from "react-uuid";
 function App() {
-  const [categories, setCategories] = useState(categoryData);
+  const [categories, setCategories] = useState([]);
   const [courses, setCourses] = useState(coursesData);
 
   // Add category
   const onAddCategory = (form) => {
     const newCategory = {
-      id: uuid(),
       ...form,
+      id: uuid(),
     };
+
+    // console.log(uuid());
 
     setCategories(categories.concat(newCategory));
   };
 
+  console.log(categories);
+
   // Edit category
-  const onEditCategory = (form) => {};
+  const onEditCategory = (form) => {
+    console.log(form);
+
+    setCategories((prev) =>
+      prev.map((item) => (item.id === form.id ? { ...prev, ...form } : prev))
+    );
+  };
+
+  // Delete category
+  const onDeleteCategory = (id) => {
+    setCategories((prev) => prev.filter((item) => item.id !== id));
+  };
 
   //
 
@@ -51,8 +64,6 @@ function App() {
     setCourses(courses.concat(form));
   };
 
-  console.log(courses);
-
   return (
     <div className="max-w-[2000px] mx-auto container">
       <div className="flex items-center justify-center p-10">
@@ -60,7 +71,12 @@ function App() {
       </div>
       <div className="mx-20">
         <div className="w-full">
-          <CategoryTable onAdd={onAddCategory} data={categories} />
+          <CategoryTable
+            onAdd={onAddCategory}
+            data={categories}
+            onEdit={onEditCategory}
+            onDelete={onDeleteCategory}
+          />
           <CourseTable data={data} />
           <CourseForm categoryData={categories} onAdd={onAddCourse} />
         </div>

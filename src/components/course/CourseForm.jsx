@@ -5,7 +5,6 @@ import { ChapterForm } from "../chapter/ChapterForm";
 import uuid from "react-uuid";
 
 export const CourseForm = ({ categoryData, onAdd }) => {
-  const [courses, setCourses] = useState([]);
   const [form, setForm] = useState({
     name: "",
     summarize: "",
@@ -27,8 +26,6 @@ export const CourseForm = ({ categoryData, onAdd }) => {
       ],
     },
   ]);
-
-  const [errors, setErrors] = useState({});
 
   const handleCourseFormChange = (e) => {
     const name = e.target.name;
@@ -64,7 +61,22 @@ export const CourseForm = ({ categoryData, onAdd }) => {
     };
 
     onAdd(data);
-    setCourses(courses.concat(form));
+
+    setForm({ name: "", category_id: "", summarize: "" });
+    setNestedForm([
+      {
+        id: uuid(),
+        name: "",
+        summarize: "",
+        lessons: [
+          {
+            id: uuid(),
+            lname: "",
+            content: "",
+          },
+        ],
+      },
+    ]);
   };
 
   const onAddChapter = () => {
@@ -91,8 +103,6 @@ export const CourseForm = ({ categoryData, onAdd }) => {
     chapterLists.splice(index, 1);
     setNestedForm(chapterLists);
   };
-
-  console.log("nested form", nestedForm);
 
   return (
     <div className=" shadow-lg bg-white p-3 mb-20">

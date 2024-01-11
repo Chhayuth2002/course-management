@@ -2,9 +2,16 @@ import { X } from "lucide-react";
 import { Button } from "../Button";
 import { useEffect, useState } from "react";
 import { TextInput } from "../Input";
+import { fa } from "@faker-js/faker";
 
-export const ModalForm = ({ setIsShowModal, handleAdd, value }) => {
-  const [form, setForm] = useState({ name: "", code: "" });
+export const ModalForm = ({
+  setIsShowModal,
+  isShowModal,
+  handleAdd,
+  value,
+  handleEdit,
+}) => {
+  const [form, setForm] = useState({ name: "", code: "", id: "" });
   const [errors, setErrors] = useState({ name: "", code: "" });
 
   const handleFormChange = (e) => {
@@ -15,21 +22,29 @@ export const ModalForm = ({ setIsShowModal, handleAdd, value }) => {
   };
 
   const onClick = () => {
-    handleAdd(form);
-    setForm({ name: "", code: "" });
+    if (value.id) {
+      handleEdit(form);
+      setIsShowModal(false);
+    } else {
+      handleAdd(form);
+      setIsShowModal(false);
+    }
+    setForm({ name: "", code: "", id: "" });
   };
 
   const onClear = () => {
-    setForm({ name: "", code: "" });
+    setForm({ name: "", code: "", id: "" });
   };
 
   useEffect(() => {
-    setErrors(value);
-  }, [value]);
+    if (value.id) {
+      setForm(value);
+    }
+  }, [value, isShowModal]);
 
   return (
     <div className=" bg-black/50 overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 h-full items-center justify-center flex">
-      <div className="relative p-4  w-1/4  h-full md:h-auto">
+      <div className="relative p-4  w-2/4  h-full md:h-auto">
         <div className="relative bg-white rounded-lg shadow">
           <Button
             onClick={() => setIsShowModal(false)}
@@ -60,7 +75,7 @@ export const ModalForm = ({ setIsShowModal, handleAdd, value }) => {
               />
               <div>
                 <Button className="mr-2" onClick={onClick}>
-                  Save
+                  {value.id ? "Edit" : "Save"}
                 </Button>
                 <Button onClick={onClear}>Clear</Button>
               </div>

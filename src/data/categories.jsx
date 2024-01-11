@@ -1,7 +1,7 @@
 // ESM
 import { faker } from "@faker-js/faker";
 
-function createRandomUser() {
+function createRandomCategory() {
   return {
     id: faker.string.uuid(),
     name: faker.internet.userName(),
@@ -9,8 +9,6 @@ function createRandomUser() {
   };
 }
 
-const categoryData = faker.helpers.multiple(createRandomUser, {
-  count: 5,
-});
+const categoryData = Array.from({ length: 5 }, createRandomCategory);
 
 export default categoryData;

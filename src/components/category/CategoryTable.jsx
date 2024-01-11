@@ -3,17 +3,28 @@ import { Button } from "../Button";
 import { useState } from "react";
 import { ModalForm } from "./ModalForm";
 
-export const CategoryTable = ({ data, onDelete, entity, onAdd }) => {
+export const CategoryTable = ({ data, onDelete, onAdd, onEdit }) => {
   const [isShowModal, setIsShowModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState({});
 
-  const onSelectedCategory = (id) => {
-    setSelectedItem(data.find((category) => category.id === id));
+  const onSelectedCategory = (id, entity) => {
+    const selectedCategory = data.find((category) => category.id === id);
+    if (entity === "edit") {
+      setSelectedItem(selectedCategory);
+      setIsShowModal(true);
+    } else {
+      onDelete(selectedCategory.id);
+    }
   };
 
   const handleAdd = (param) => {
     onAdd(param);
   };
+
+  const handleEdit = (param) => {
+    onEdit(param);
+  };
+
   return (
     <>
       {isShowModal && (
@@ -21,6 +32,8 @@ export const CategoryTable = ({ data, onDelete, entity, onAdd }) => {
           value={selectedItem}
           setIsShowModal={setIsShowModal}
           handleAdd={handleAdd}
+          handleEdit={handleEdit}
+          isShowModal={isShowModal}
         />
       )}
       <div className="flex justify-between">
@@ -41,14 +54,16 @@ export const CategoryTable = ({ data, onDelete, entity, onAdd }) => {
             <tbody className="text-blue-gray-900">
               {data?.length ? (
                 <>
-                  {data?.map((d) => (
-                    <tr key={d.id} className="border border-b">
-                      <td className="px-3 py-4 ">{d.id}</td>
-                      <td className="px-3 py-4">{d.name}</td>
-                      <td className="px-3 py-4">{d.code}</td>
+                  {data?.map((category) => (
+                    <tr key={category.id} className="border border-b">
+                      <td className="px-3 py-4 ">{category.id}</td>
+                      <td className="px-3 py-4">{category.name}</td>
+                      <td className="px-3 py-4">{category.code}</td>
                       <td className="px-3 py-4">
                         <Button
-                          onClick={() => selectedItem(d.id, entity)}
+                          onClick={() =>
+                            onSelectedCategory(category.id, "edit")
+                          }
                           className="mr-2 text-blue-400"
                           variant="icon"
                         >
@@ -56,7 +71,9 @@ export const CategoryTable = ({ data, onDelete, entity, onAdd }) => {
                         </Button>
 
                         <Button
-                          onClick={() => onDelete(d.id, entity)}
+                          onClick={() =>
+                            onSelectedCategory(category.id, "delete")
+                          }
                           className="text-rose-500"
                           variant="icon"
                         >
