@@ -7,25 +7,23 @@ import uuid from "react-uuid";
 export const CourseForm = ({ categoryData, onAdd }) => {
   const [form, setForm] = useState({
     name: "",
-    summarize: "",
     category_id: "",
+    summarize: "",
+    chapters: [
+      {
+        id: uuid(),
+        cname: "",
+        csummarize: "",
+        lessons: [
+          {
+            id: uuid(),
+            lname: "",
+            content: "",
+          },
+        ],
+      },
+    ],
   });
-
-  const [nestedForm, setNestedForm] = useState([
-    {
-      id: uuid(),
-      name: "",
-      summarize: "",
-      lessons: [
-        {
-          id: uuid(),
-          lname: "",
-          content: "",
-        },
-      ],
-    },
-  ]);
-
   const handleCourseFormChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -34,27 +32,27 @@ export const CourseForm = ({ categoryData, onAdd }) => {
   };
 
   const [errors, setErrors] = useState({});
-  const [NestedError, setNestedError] = useState({});
 
   // Handle chapter and lesson form change
   const handleNestedFormChange = (e, index, lesIndex) => {
     const name = e.target.name;
     const value = e.target.value;
+    let updateForm = { ...form };
 
-    setNestedForm((prev) => {
-      const updatedForm = [...prev];
+    setForm((prev) => {
+      let chapterForm = [...prev.chapters];
+      chapterForm[index][name] = value;
 
-      updatedForm[index][name] = value;
-
-      updatedForm[index] = {
-        ...updatedForm[index],
-        lessons: updatedForm[index].lessons.map((lesson, i) =>
-          i === lesIndex ? { ...lesson, [name]: value } : lesson
-        ),
-      };
-      return updatedForm;
+      updateForm = [
+        ...updateForm,
+        updateForm,
+        (chapters = [...chapterForm[index], chapterForm[index]]),
+      ];
+      return updateForm;
     });
   };
+
+  console.log(form);
 
   // Add
   const onClick = () => {
@@ -83,7 +81,6 @@ export const CourseForm = ({ categoryData, onAdd }) => {
     const data = {
       ...form,
       id: uuid(),
-      chapters: nestedForm,
     };
     onAdd(data);
 
@@ -104,38 +101,46 @@ export const CourseForm = ({ categoryData, onAdd }) => {
       ],
     };
 
-    setNestedForm((prev) => {
-      return [...prev, newChapter];
+    setForm((prev) => {
+      return {
+        ...prev,
+        chapters: [...prev.chapters, newChapter],
+      };
     });
   };
 
   const removeChapter = (index) => {
-    let chapterLists = [...nestedForm];
+    let chapterLists = [...form];
     chapterLists.splice(index, 1);
-    setNestedForm(chapterLists);
+    setForm(chapterLists);
   };
 
   const onReset = () => {
-    setForm({ name: "", category_id: "", summarize: "" });
-    setNestedForm([
-      {
-        id: uuid(),
-        name: "",
-        summarize: "",
-        lessons: [
-          {
-            id: uuid(),
-            lname: "",
-            content: "",
-          },
-        ],
-      },
-    ]);
+    setForm({
+      name: "",
+      category_id: "",
+      summarize: "",
+      chapters: [
+        {
+          id: uuid(),
+          cname: "",
+          csummarize: "",
+          lessons: [
+            {
+              id: uuid(),
+              lname: "",
+              content: "",
+            },
+          ],
+        },
+      ],
+    });
   };
 
   return (
     <div className="shadow-xl bg-white p-3 mb-20 rounded-md ">
       <div className=" text-xl font-semibold mb-4">New course</div>
+
       <div className="flex flex-col">
         <div className="flex flex-row w-full gap-3">
           <TextInput
@@ -169,15 +174,15 @@ export const CourseForm = ({ categoryData, onAdd }) => {
           <div className=" text-xl font-semibold mb-4">Chapter</div>
         </div>
         <div className="grid grid-cols-2 gap-3 ">
-          {nestedForm?.map((chapForm, index) => (
+          {form?.chapters?.map((chapForm, index) => (
             <ChapterForm
               key={index}
               index={index}
               form={chapForm}
               handleFormChange={handleNestedFormChange}
-              setNestedForm={setNestedForm}
+              setNestedForm={setForm}
               removeChapter={removeChapter}
-              nestedForm={nestedForm}
+              nestedForm={form}
             />
           ))}
         </div>

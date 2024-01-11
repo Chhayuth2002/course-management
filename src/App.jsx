@@ -40,7 +40,7 @@ function App() {
     setCourses((prev) => prev.filter((item) => item.id !== id));
   };
 
-  const onEditCourse = (id) => {};
+  // const onEditCourse = (id) => {};
 
   const data = useMemo(() => {
     const result = courses.map((course) => {

@@ -20,13 +20,13 @@ export const ChapterForm = ({
     };
 
     setNestedForm((prev) => {
-      const chapterList = prev.map((chapter, cindex) => {
+      const chapterList = prev.chapters.map((chapter, cindex) => {
         if (cindex === index) {
           return { ...chapter, lessons: [...chapter.lessons, newLesson] };
         }
         return chapter;
       });
-      return chapterList;
+      return { ...prev, chapters: chapterList };
     });
   };
 
@@ -58,13 +58,13 @@ export const ChapterForm = ({
       <div className=" gap-10">
         <TextInput
           onChange={(e) => handleFormChange(e, index)}
-          name="name"
+          name="cname"
           value={form.name}
           className="w-full"
           label="Name"
         />
         <TextArea
-          name="summarize"
+          name="csummarize"
           value={form.summarize}
           onChange={(e) => handleFormChange(e, index)}
           className="w-full"
