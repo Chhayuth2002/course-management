@@ -1,4 +1,4 @@
-import { Edit, Trash } from "lucide-react";
+import { Edit, Trash, View } from "lucide-react";
 import { Button } from "../Button";
 
 export const CourseTable = ({ data, onDelete, selectedItem, entity }) => {
@@ -36,14 +36,21 @@ export const CourseTable = ({ data, onDelete, selectedItem, entity }) => {
                       <td className="px-3 py-4">
                         <Button
                           onClick={() => selectedItem(d.id, entity)}
-                          className="mr-2 text-blue-400"
+                          variant="icon"
+                        >
+                          <View />
+                        </Button>
+
+                        <Button
+                          onClick={() => selectedItem(d.id, entity)}
+                          className="mx-2 text-blue-400"
                           variant="icon"
                         >
                           <Edit />
                         </Button>
 
                         <Button
-                          onClick={() => onDelete(d.id, entity)}
+                          onClick={() => onDelete(d.id)}
                           className="text-rose-500"
                           variant="icon"
                         >

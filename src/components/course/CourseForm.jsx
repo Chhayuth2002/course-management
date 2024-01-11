@@ -62,21 +62,7 @@ export const CourseForm = ({ categoryData, onAdd }) => {
 
     onAdd(data);
 
-    setForm({ name: "", category_id: "", summarize: "" });
-    setNestedForm([
-      {
-        id: uuid(),
-        name: "",
-        summarize: "",
-        lessons: [
-          {
-            id: uuid(),
-            lname: "",
-            content: "",
-          },
-        ],
-      },
-    ]);
+    onReset();
   };
 
   const onAddChapter = () => {
@@ -104,8 +90,26 @@ export const CourseForm = ({ categoryData, onAdd }) => {
     setNestedForm(chapterLists);
   };
 
+  const onReset = () => {
+    setForm({ name: "", category_id: "", summarize: "" });
+    setNestedForm([
+      {
+        id: uuid(),
+        name: "",
+        summarize: "",
+        lessons: [
+          {
+            id: uuid(),
+            lname: "",
+            content: "",
+          },
+        ],
+      },
+    ]);
+  };
+
   return (
-    <div className=" shadow-lg bg-white p-3 mb-20">
+    <div className="shadow-xl bg-white p-3 mb-20 rounded-md ">
       <div className=" text-xl font-semibold mb-4">New course</div>
       <div className="flex flex-col">
         <div className="flex flex-row w-full gap-3">
@@ -153,9 +157,11 @@ export const CourseForm = ({ categoryData, onAdd }) => {
           <Button onClick={onAddChapter}>Add new chapter</Button>
         </div>
       </div>
-      <div className="my-4 items-center justify-center flex gap-5">
-        <Button onClick={onClick}>Save</Button>
-        <Button>Reset</Button>
+      <div className="my-2 gap-5">
+        <Button className="mr-2" onClick={onClick}>
+          Save
+        </Button>
+        <Button onClick={onReset}>Reset</Button>
       </div>
     </div>
   );

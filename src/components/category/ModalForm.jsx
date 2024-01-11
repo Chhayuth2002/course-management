@@ -2,16 +2,16 @@ import { X } from "lucide-react";
 import { Button } from "../Button";
 import { useEffect, useState } from "react";
 import { TextInput } from "../Input";
-import { fa } from "@faker-js/faker";
 
 export const ModalForm = ({
   setIsShowModal,
   isShowModal,
   handleAdd,
   value,
+  setValue,
   handleEdit,
 }) => {
-  const [form, setForm] = useState({ name: "", code: "", id: "" });
+  const [form, setForm] = useState({ name: "", code: "" });
   const [errors, setErrors] = useState({ name: "", code: "" });
 
   const handleFormChange = (e) => {
@@ -34,6 +34,12 @@ export const ModalForm = ({
 
   const onClear = () => {
     setForm({ name: "", code: "", id: "" });
+    setValue({});
+  };
+
+  const onCloseForm = () => {
+    setIsShowModal(false);
+    setValue({});
   };
 
   useEffect(() => {
@@ -47,7 +53,7 @@ export const ModalForm = ({
       <div className="relative p-4  w-2/4  h-full md:h-auto">
         <div className="relative bg-white rounded-lg shadow">
           <Button
-            onClick={() => setIsShowModal(false)}
+            onClick={onCloseForm}
             className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
             variant="icon"
           >
@@ -55,9 +61,9 @@ export const ModalForm = ({
           </Button>
 
           <div className="flex flex-col p-5">
-            <div className="p-5 w-full ">
-              <div className="mb-2 text-3xl text-center font-semibold border-b-2 ">
-                Category Form
+            <div className="w-full flex justify-between py-4">
+              <div className="mb-2 text-3xl text-center font-semibold  ">
+                {value.id ? "Edit: " + value.name : "Create category"}
               </div>
             </div>
             <div className="gap-x-3 items-center justify-center grid-cols-2 grid">
@@ -75,7 +81,7 @@ export const ModalForm = ({
               />
               <div>
                 <Button className="mr-2" onClick={onClick}>
-                  {value.id ? "Edit" : "Save"}
+                  {value.id ? "Update" : "Save"}
                 </Button>
                 <Button onClick={onClear}>Clear</Button>
               </div>

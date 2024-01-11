@@ -29,6 +29,7 @@ export const CategoryTable = ({ data, onDelete, onAdd, onEdit }) => {
     <>
       {isShowModal && (
         <ModalForm
+          setValue={setSelectedItem}
           value={selectedItem}
           setIsShowModal={setIsShowModal}
           handleAdd={handleAdd}
