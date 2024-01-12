@@ -35,8 +35,11 @@ function App() {
 
   // Course
   const onAddCourse = (form) => {
-    console.log(form);
-    setCourses(courses.concat(form));
+    const newCourse = {
+      ...form,
+      id: uuid(),
+    };
+    setCourses(courses.concat(newCourse));
   };
 
   const onEditCourse = (form) => {
@@ -52,10 +55,9 @@ function App() {
 
   const data = useMemo(() => {
     const result = courses.map((course) => {
-      // let category = "";
-      // if (course.category_id) {
-      //   categories.find((category) => category.id === course?.category_id).name;
-      // }
+      const category = categories.find(
+        (category) => category.id === course.category_id
+      ).name;
 
       const totalLessons = course.chapters.reduce(
         (sum, chapter) => sum + chapter.lessons.length,
@@ -64,7 +66,7 @@ function App() {
 
       return {
         ...course,
-        // category,
+        category,
         total_chapters: course.chapters.length,
         total_lessons: totalLessons,
       };
@@ -99,7 +101,6 @@ function App() {
               selectedItem={selectedItem}
               setSelectedItem={setSelectedItem}
             />
-            {/* <TestForm /> */}
           </div>
         </div>
       </div>

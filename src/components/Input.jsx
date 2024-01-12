@@ -5,12 +5,11 @@ export const TextInput = ({
   label,
   name,
   onChange,
-  error,
   className,
   onBlur,
 }) => {
   return (
-    <div className={ctx("mb-4", className)}>
+    <div className={ctx("mb-2", className)}>
       <label className="block mb-2 text-sm font-medium ">{label}</label>
       <input
         type={type}
@@ -20,11 +19,6 @@ export const TextInput = ({
         onBlur={onBlur}
         className="bg-gray-50 h-10  border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:focus:ring-blue-500 dark:focus:border-blue-500"
       />
-      {error && (
-        <span className=" flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
-          {error}
-        </span>
-      )}
     </div>
   );
 };
@@ -35,39 +29,31 @@ export const Dropdown = ({
   name,
   onChange,
   placeHolder,
-  error,
   value,
   className,
 }) => {
   return (
-    <div className={ctx("flex flex-col mb-4", className)}>
-      <div>
-        <label className=" block mb-2 text-sm font-medium">{label}</label>
-        <select
-          onChange={onChange}
-          name={name}
-          value={value}
-          className="bg-gray-50 border h-10 border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-        >
-          {data?.length > 0 ? (
-            <>
-              <option value="">{placeHolder}</option>
-              {data?.map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.name}
-                </option>
-              ))}
-            </>
-          ) : (
-            <option value="">No {label}</option>
-          )}
-        </select>
-      </div>
-      {error && (
-        <span className=" flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
-          {error}
-        </span>
-      )}
+    <div className={ctx(" mb-2", className)}>
+      <label className=" block mb-2 text-sm font-medium">{label}</label>
+      <select
+        onChange={onChange}
+        name={name}
+        value={value}
+        className="bg-gray-50 border h-10 border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+      >
+        {data?.length > 0 ? (
+          <>
+            <option value="">{placeHolder}</option>
+            {data?.map((item) => (
+              <option key={item.id} value={item.id}>
+                {item.name}
+              </option>
+            ))}
+          </>
+        ) : (
+          <option value="">No {label}</option>
+        )}
+      </select>
     </div>
   );
 };
@@ -77,7 +63,6 @@ export const TextArea = ({
   name,
   value,
   label,
-  error,
   className,
   placeHolder,
 }) => {
@@ -94,11 +79,6 @@ export const TextArea = ({
           placeholder={placeHolder}
         ></textarea>
       </div>
-      {error && (
-        <span className=" flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
-          {error}
-        </span>
-      )}
     </>
   );
 };

@@ -5,7 +5,7 @@ export const Button = ({
   isDisable,
   className,
   onClick,
-  type,
+  type = "button",
   variant = "default",
 }) => {
   let baseStyle;
