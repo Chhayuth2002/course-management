@@ -5,7 +5,7 @@ import { TextArea, TextInput } from "../Input";
 export const LessonForm = ({
   lessIndex,
   form,
-  handleFormChange,
+  handleLessonFormChange,
   chapIndex,
   removeLesson,
 }) => {
@@ -25,16 +25,16 @@ export const LessonForm = ({
             <TextInput
               className="w-full"
               label="Name"
-              name="lname"
-              value={form.lname}
-              onChange={(e) => handleFormChange(e, chapIndex, lessIndex)}
+              name="name"
+              value={form.name}
+              onChange={(e) => handleLessonFormChange(e, chapIndex, lessIndex)}
             />
             <TextArea
               className="w-full"
               label="Content"
               name="content"
               value={form.content}
-              onChange={(e) => handleFormChange(e, chapIndex, lessIndex)}
+              onChange={(e) => handleLessonFormChange(e, chapIndex, lessIndex)}
             />
           </div>
         </div>

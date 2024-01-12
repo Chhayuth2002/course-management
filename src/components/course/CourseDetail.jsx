@@ -2,8 +2,6 @@ import { X } from "lucide-react";
 import { useState } from "react";
 
 export const CourseDetail = ({ data, setIsShowModal }) => {
-  const [showDetail, setIsShowDetail] = useState({});
-
   return (
     <div className=" bg-black/50 overflow-y-auto overflow-x-auto fixed top-0 right-0 left-0 z-50 h-full items-center justify-center flex">
       <div className="relative p-4 w-full max-h-6xl max-w-6xl h-full md:h-auto">
@@ -33,7 +31,7 @@ export const CourseDetail = ({ data, setIsShowModal }) => {
                     {chapter?.lessons?.map((lesson, index) => (
                       <div key={lesson.id}>
                         <div className="ml-3 mt-2 text-xl border-b-2">
-                          Lesson {index + 1}: {lesson.lname}
+                          Lesson {index + 1}: {lesson.name}
                           {/* <div className="text-xs">{lesson.content}</div> */}
                         </div>
                       </div>

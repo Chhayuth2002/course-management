@@ -37,6 +37,7 @@ export const CategoryTable = ({ data, onDelete, onAdd, onEdit }) => {
           isShowModal={isShowModal}
         />
       )}
+
       <div className="flex justify-between">
         <h1 className="text-xl font-semibold">Category Management</h1>
         <Button onClick={() => setIsShowModal(true)}>Add new category</Button>

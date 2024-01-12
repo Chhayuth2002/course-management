@@ -16,7 +16,7 @@ export const TextInput = ({
         onChange={onChange}
         name={name}
         value={value}
-        className="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        className="bg-gray-50 h-10  border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:focus:ring-blue-500 dark:focus:border-blue-500"
         required
       />
       {error && (
@@ -41,12 +41,12 @@ export const Dropdown = ({
   return (
     <div className={ctx("flex flex-col mb-4", className)}>
       <div>
-        <label className=" lock mb-2 text-sm font-medium">{label}</label>
+        <label className=" block mb-2 text-sm font-medium">{label}</label>
         <select
           onChange={onChange}
           name={name}
           value={value}
-          className="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+          className="bg-gray-50 border h-10 border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
         >
           {data?.length > 0 ? (
             <>
