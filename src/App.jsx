@@ -23,6 +23,7 @@ function App() {
   };
 
   const onEditCategory = (form) => {
+    console.log(form);
     setCategories((prev) =>
       prev.map((item) => (item.id === form.id ? { ...item, ...form } : item))
     );
@@ -51,9 +52,10 @@ function App() {
 
   const data = useMemo(() => {
     const result = courses.map((course) => {
-      const category = categories.find(
-        (category) => category.id === course.category_id
-      ).name;
+      // let category = "";
+      // if (course.category_id) {
+      //   categories.find((category) => category.id === course?.category_id).name;
+      // }
 
       const totalLessons = course.chapters.reduce(
         (sum, chapter) => sum + chapter.lessons.length,
@@ -62,14 +64,14 @@ function App() {
 
       return {
         ...course,
-        category,
+        // category,
         total_chapters: course.chapters.length,
         total_lessons: totalLessons,
       };
     });
 
     return result;
-  }, [courses, categories]);
+  }, [courses]);
 
   return (
     <div className="bg-slate-300">
@@ -97,6 +99,7 @@ function App() {
               selectedItem={selectedItem}
               setSelectedItem={setSelectedItem}
             />
+            {/* <TestForm /> */}
           </div>
         </div>
       </div>

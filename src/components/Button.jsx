@@ -5,6 +5,7 @@ export const Button = ({
   isDisable,
   className,
   onClick,
+  type,
   variant = "default",
 }) => {
   let baseStyle;
@@ -23,6 +24,7 @@ export const Button = ({
 
   return (
     <button
+      type={type}
       disabled={isDisable}
       onClick={onClick}
       className={ctx(baseStyle, className)}

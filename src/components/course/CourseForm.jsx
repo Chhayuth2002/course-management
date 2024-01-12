@@ -37,7 +37,6 @@ export const CourseForm = ({
 
     setForm({ ...form, [name]: value });
   };
-  const [errors, setErrors] = useState({});
 
   const handleChapterFormChange = (e, chapterIndex) => {
     const name = e.target.name;
@@ -66,28 +65,6 @@ export const CourseForm = ({
 
   // Add
   const onSaveCourse = () => {
-    const checkError = {
-      name: !form.name ? "Course name is required" : "",
-      category_id: !form.category_id ? "Category is required" : "",
-      summarize: !form.summarize ? "Course summarize is required" : "",
-      // chapters: nestedForm.map((chapter) => {
-      //   const checkLessonError = chapter.lessons.map((lesson) => {
-      //     return {
-      //       name: lesson.name ? "Lesson name is required" : "",
-      //       content: lesson.content ? "Lesson content is required" : "",
-      //     };
-      //   });
-
-      //   return {
-      //     name: chapter.name ? "Chapter name is required" : "",
-      //     summarize: chapter.summarize ? "Chapter summarize is required" : "",
-      //     lessons: checkLessonError,
-      //   };
-      // }),
-    };
-
-    setErrors(checkError);
-
     const data = {
       ...form,
       id: uuid(),
@@ -161,7 +138,6 @@ export const CourseForm = ({
     }
   }, [selectedItem]);
 
-  console.log(selectedItem);
   return (
     <div className="shadow-xl bg-white p-3 mb-20 rounded-md ">
       <div className=" text-xl font-semibold mb-4">New course</div>
@@ -174,7 +150,6 @@ export const CourseForm = ({
             name="name"
             value={form.name}
             onChange={handleCourseFormChange}
-            error={errors.name}
           />
           <Dropdown
             data={categoryData}
@@ -184,7 +159,6 @@ export const CourseForm = ({
             name="category_id"
             value={form.category_id}
             placeHolder="Select a category"
-            error={errors.category_id}
           />
         </div>
         <TextArea
@@ -192,7 +166,6 @@ export const CourseForm = ({
           onChange={handleCourseFormChange}
           value={form.summarize}
           name="summarize"
-          error={errors.summarize}
         />
 
         <div className="my-2 flex justify-between">

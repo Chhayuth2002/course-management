@@ -7,6 +7,7 @@ export const TextInput = ({
   onChange,
   error,
   className,
+  onBlur,
 }) => {
   return (
     <div className={ctx("mb-4", className)}>
@@ -16,8 +17,8 @@ export const TextInput = ({
         onChange={onChange}
         name={name}
         value={value}
+        onBlur={onBlur}
         className="bg-gray-50 h-10  border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        required
       />
       {error && (
         <span className=" flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1">
@@ -82,7 +83,7 @@ export const TextArea = ({
 }) => {
   return (
     <>
-      <div className={ctx("mb-4", className)}>
+      <div className={ctx("mb-2", className)}>
         <label className="block mb-2 text-sm font-medium">{label}</label>
         <textarea
           onChange={onChange}

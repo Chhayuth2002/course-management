@@ -40,7 +40,14 @@ export const CategoryTable = ({ data, onDelete, onAdd, onEdit }) => {
 
       <div className="flex justify-between">
         <h1 className="text-xl font-semibold">Category Management</h1>
-        <Button onClick={() => setIsShowModal(true)}>Add new category</Button>
+        <Button
+          onClick={() => {
+            setIsShowModal(true);
+            setSelectedItem({});
+          }}
+        >
+          Add new category
+        </Button>
       </div>
       <div className="flex justify-center my-5 border-b-2 bg-white shadow-md rounded-xl">
         <div className="flex flex-col items-center justify-center w-full">
