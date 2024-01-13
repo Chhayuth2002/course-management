@@ -1,5 +1,4 @@
 import { X } from "lucide-react";
-import { useState } from "react";
 
 export const CourseDetail = ({ data, setIsShowModal }) => {
   return (

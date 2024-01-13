@@ -2,11 +2,11 @@ import { TextArea, TextInput } from "../Input";
 import { Button } from "../Button";
 import { X } from "lucide-react";
 import { FieldArray } from "formik";
-import { LessonFormik } from "./LessonFormik";
+import { LessonForm } from "./LessonForm";
 import uuid from "react-uuid";
 import { ErrorMsg } from "../ErrorMsg";
 
-export const ChapterFormik = ({
+export const ChapterForm = ({
   remove,
   chapterForm,
   handleChange,
@@ -50,7 +50,7 @@ export const ChapterFormik = ({
         {({ push, remove }) => (
           <>
             {chapterForm.lessons.map((lessonForm, index) => (
-              <LessonFormik
+              <LessonForm
                 key={index}
                 push={push}
                 remove={remove}

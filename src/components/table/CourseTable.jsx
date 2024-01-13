@@ -1,8 +1,7 @@
 import { Edit, Trash, View } from "lucide-react";
 import { Button } from "../Button";
 import { useState } from "react";
-import { CourseDetail } from "./CourseDetail";
-
+import { CourseDetail } from "../CourseDetail";
 export const CourseTable = ({ data, onDelete, setSelectedItem }) => {
   const [isShowModal, setIsShowModal] = useState(false);
   const [detailData, setDetailData] = useState({});

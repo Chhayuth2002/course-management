@@ -3,7 +3,7 @@ import { X } from "lucide-react";
 import { TextArea, TextInput } from "../Input";
 import { ErrorMsg } from "../ErrorMsg";
 
-export const LessonFormik = ({
+export const LessonForm = ({
   remove,
   lessonForm,
   lessonIndex,

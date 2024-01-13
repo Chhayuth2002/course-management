@@ -4,7 +4,12 @@ import { TextInput } from "../Input";
 import { useFormik } from "formik";
 import { CategoryValidate } from "../../schemas";
 
-export const ModalForm = ({ setIsShowModal, handleAdd, value, handleEdit }) => {
+export const CategoryForm = ({
+  setIsShowModal,
+  handleAdd,
+  value,
+  handleEdit,
+}) => {
   const {
     values,
     handleSubmit,

@@ -1,7 +1,7 @@
 import { Edit, Trash } from "lucide-react";
 import { Button } from "../Button";
 import { useState } from "react";
-import { ModalForm } from "./ModalForm";
+import { CategoryForm } from "../form/CategoryForm";
 
 export const CategoryTable = ({ data, onDelete, onAdd, onEdit }) => {
   const [isShowModal, setIsShowModal] = useState(false);
@@ -28,7 +28,7 @@ export const CategoryTable = ({ data, onDelete, onAdd, onEdit }) => {
   return (
     <>
       {isShowModal && (
-        <ModalForm
+        <CategoryForm
           setValue={setSelectedItem}
           value={selectedItem}
           setIsShowModal={setIsShowModal}

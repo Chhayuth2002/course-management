@@ -1,10 +1,10 @@
 import { Dropdown, TextArea, TextInput } from "../Input";
 import { Button } from "../Button";
 import { FieldArray, Formik, Form } from "formik";
-import { ChapterFormik } from "./ChapterFormik";
 import uuid from "react-uuid";
 import { CourseValidate } from "../../schemas";
 import { ErrorMsg } from "../ErrorMsg";
+import { ChapterForm } from "./ChapterForm";
 
 const initValue = {
   name: "",
@@ -49,15 +49,7 @@ export const CourseForm = ({
         }}
         validationSchema={CourseValidate}
       >
-        {({
-          values,
-          handleChange,
-          resetForm,
-          dirty,
-          errors,
-          touched,
-          handleBlur,
-        }) => {
+        {({ values, handleChange, resetForm, dirty }) => {
           return (
             <Form>
               <div className=" text-xl font-semibold mb-4">New course</div>
@@ -70,8 +62,6 @@ export const CourseForm = ({
                       name="name"
                       value={values.name}
                       onChange={handleChange}
-                      // onBlur={handleBlur}
-                      // error={errors.name && touched.name ? errors.name : null}
                     />
                     <ErrorMsg name="name" />
                   </div>
@@ -83,13 +73,7 @@ export const CourseForm = ({
                       className="w-full"
                       name="category_id"
                       value={values.category_id}
-                      onBlur={handleBlur}
                       placeHolder="Select a category"
-                      error={
-                        errors.category_id && touched.category_id
-                          ? errors.category_id
-                          : null
-                      }
                     />
                     <ErrorMsg name="category_id" />
                   </div>
@@ -99,12 +83,6 @@ export const CourseForm = ({
                   onChange={handleChange}
                   value={values.summarize}
                   name="summarize"
-                  onBlur={handleBlur}
-                  error={
-                    errors.summarize && touched.summarize
-                      ? errors.summarize
-                      : null
-                  }
                 />
                 <ErrorMsg name="summarize" />
                 <div className="my-2 flex justify-between">
@@ -115,16 +93,13 @@ export const CourseForm = ({
                     <>
                       <div className="grid grid-cols-2 gap-3 ">
                         {values.chapters?.map((chapterForm, index) => (
-                          <ChapterFormik
+                          <ChapterForm
                             key={index}
                             push={push}
                             remove={remove}
                             chapterForm={chapterForm}
                             chapterIndex={index}
                             handleChange={handleChange}
-                            errors={errors}
-                            handleBlur={handleBlur}
-                            touched={touched}
                           />
                         ))}
                       </div>
@@ -149,7 +124,7 @@ export const CourseForm = ({
               </div>
               <div className="my-2 gap-5">
                 <Button className="mr-2" type="submit" isDisable={!dirty}>
-                  Save
+                  {!selectedItem.id ? "Save" : "Update"}
                 </Button>
                 <Button onClick={() => resetForm()}>Reset</Button>
               </div>
