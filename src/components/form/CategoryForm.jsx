@@ -1,8 +1,9 @@
 import { X } from "lucide-react";
 import { Button } from "../Button";
 import { TextInput } from "../Input";
-import { useFormik } from "formik";
+import { useFormik, Field, Form } from "formik";
 import { CategoryValidate } from "../../schemas";
+import { TextInputField } from "../InputField";
 
 export const CategoryForm = ({
   setIsShowModal,
@@ -12,7 +13,7 @@ export const CategoryForm = ({
 }) => {
   const {
     values,
-    handleSubmit,
+
     handleChange,
     handleBlur,
     touched,
@@ -60,15 +61,12 @@ export const CategoryForm = ({
                 {value.id ? "Edit: " + value.name : "Create category"}
               </div>
             </div>
-            <form onSubmit={handleSubmit}>
+            <Form>
               <div className="gap-x-3 items-center justify-center grid-cols-2 grid">
-                <TextInput
-                  label="Name"
+                <Field
                   name="name"
-                  value={values.name}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={errors.name && touched.name ? errors.name : null}
+                  component={TextInputField}
+                  placeholder="Category name"
                 />
 
                 <TextInput
@@ -88,7 +86,7 @@ export const CategoryForm = ({
                   </Button>
                 </div>
               </div>
-            </form>
+            </Form>
           </div>
         </div>
       </div>

@@ -7,6 +7,7 @@ import uuid from "react-uuid";
 import { CategoryTable } from "./components/table/CategoryTable";
 import { CourseTable } from "./components/table/CourseTable";
 import { CourseForm } from "./components/form/CourseForm";
+import { Testing } from "./components/Test";
 function App() {
   const [categories, setCategories] = useState(categoryData);
   const [courses, setCourses] = useState(courseData);
@@ -101,6 +102,13 @@ function App() {
               selectedItem={selectedItem}
               setSelectedItem={setSelectedItem}
             />
+            {/* <Testing
+              categoryData={categories}
+              onAdd={onAddCourse}
+              onEdit={onEditCourse}
+              selectedItem={selectedItem}
+              setSelectedItem={setSelectedItem}
+            /> */}
           </div>
         </div>
       </div>
