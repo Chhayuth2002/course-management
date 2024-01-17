@@ -97,8 +97,6 @@ export const ReactSelect = ({
   };
 
   let selectedItem =  options.find((option) => option.value === field.value);
-    // ? options.filter((option) => field.value.indexOf(option.value) >= 0)
-    // :
 
   return (
     <>
