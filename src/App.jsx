@@ -1,12 +1,12 @@
 import { useMemo, useState } from "react";
+import { CategoryTable } from "./components/category/CategoryTable";
+import { CourseTable } from "./components/course/CourseTable";
+import { CourseForm } from "./components/course/CourseForm";
 
 import courseData from "./data/courses";
 import categoryData from "./data/categories";
 
 import uuid from "react-uuid";
-import { CategoryTable } from "./components/table/CategoryTable";
-import { CourseTable } from "./components/table/CourseTable";
-import { CourseForm } from "./components/form/CourseForm";
 function App() {
   const [categories, setCategories] = useState(categoryData);
   const [courses, setCourses] = useState(courseData);
