@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { CategoryTable } from "./components/category/CategoryTable";
+import { CategoryTable } from "./components/table/CategoryTable";
 import { CourseTable } from "./components/table/CourseTable";
 import { CourseForm } from "./components/course/CourseForm";
 

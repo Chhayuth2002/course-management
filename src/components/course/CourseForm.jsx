@@ -1,21 +1,19 @@
-import { Dropdown, TextArea, TextInput } from '../Input'
+import { SelectInput, TextArea, TextInput } from '../Input'
 import { Button } from '../Button'
 import { FieldArray, Formik, Form, Field } from 'formik'
-import { ChapterFormik } from './ChapterFormik'
 import uuid from 'react-uuid'
 import { CourseValidate } from '../../schemas'
-import { ErrorMsg } from '../ErrorMsg'
 import { X } from 'lucide-react'
 
 const initValue = {
   name: '',
   category_id: '',
-  summarize: '',
+  summary: '',
   chapters: [
     {
       id: uuid(),
       name: '',
-      summarize: '',
+      summary: '',
       lessons: [
         {
           id: uuid(),
@@ -50,15 +48,7 @@ export const CourseForm = ({
         }}
         validationSchema={CourseValidate}
       >
-        {({
-          values,
-          handleChange,
-          resetForm,
-          dirty,
-          errors,
-          touched,
-          handleBlur
-        }) => {
+        {({ values, resetForm, dirty }) => {
           return (
             <Form>
               <div className=' text-xl font-semibold mb-4'>New course</div>
@@ -66,31 +56,25 @@ export const CourseForm = ({
               <div className='flex flex-col'>
                 <div className='flex flex-row w-full gap-3'>
                   <div className='flex flex-col  w-full'>
-                    <Field label='Name' name='name' component={TextInput} />
+                    <Field
+                      label='Name'
+                      name='name'
+                      placeholder='Name'
+                      component={TextInput}
+                    />
                   </div>
                   <div className='flex flex-col  w-full'>
-                    <Dropdown
-                      data={categoryData}
-                      onChange={handleChange}
-                      label='Category'
-                      className='w-full'
+                    <Field label='Name'
                       name='category_id'
-                      value={values.category_id}
-                      onBlur={handleBlur}
-                      placeHolder='Select a category'
-                      error={
-                        errors.category_id && touched.category_id
-                          ? errors.category_id
-                          : null
-                      }
-                    />
-                    <ErrorMsg name='category_id' />
+                      component={SelectInput}
+                      optionsData={categoryData}
+                      />
                   </div>
                 </div>
                 <Field
                   component={TextArea}
-                  label='Summarize'
-                  name='summarize'
+                  placeholder='Summary'
+                  name='summary'
                 />
                 <div className='my-2 flex justify-between'>
                   <div className=' text-xl font-semibold mb-4'>Chapter</div>
@@ -117,15 +101,15 @@ export const CourseForm = ({
                                   className='w-full'
                                   name={`chapters.${chapterIndex}.name`}
                                   component={TextInput}
+                                  placeholder='Name'
                                 />
                                 <Field
                                   label='Name'
                                   className='w-full'
-                                  name={`chapters.${chapterIndex}.summarize`}
+                                  name={`chapters.${chapterIndex}.summary`}
                                   component={TextArea}
-
+                                  placeholder='Summary'
                                 />
-                               
                               </div>
                               <div className='my-2 flex justify-between mb-2'>
                                 <div className=' text-xl font-semibold mb-4'>
@@ -161,15 +145,16 @@ export const CourseForm = ({
                                                 label='Name'
                                                 name={`chapters.${chapterIndex}.lessons.${lessonIndex}.name`}
                                                 component={TextInput}
+                                                placeholder='Name'
                                               />
-                                           
+
                                               <Field
                                                 className='w-full'
                                                 label='Content'
                                                 name={`chapters.${chapterIndex}.lessons.${lessonIndex}.content`}
-                                                component={TextInput}
+                                                component={TextArea}
+                                                placeholder='Summary'
                                               />
-                                           
                                             </div>
                                           </div>
                                         </div>
@@ -202,7 +187,7 @@ export const CourseForm = ({
                             push({
                               id: uuid(),
                               name: '',
-                              summarize: '',
+                              summary: '',
                               lessons: [{ id: uuid(), name: '', content: '' }]
                             })
                           }
