@@ -1,19 +1,23 @@
 import { Edit, Trash, View } from "lucide-react";
 import { Button } from "../Button";
 import { useState } from "react";
+// import { CourseForm } from "./CourseForm";
 import { CourseDetail } from "./CourseDetail";
 
-export const CourseTable = ({ data, onDelete, setSelectedItem }) => {
+export const CourseTable = ({
+  data,
+  onDelete,
+  entity,
+  onEdit,
+  // onAddCourse,
+  // categories,
+}) => {
   const [isShowModal, setIsShowModal] = useState(false);
   const [detailData, setDetailData] = useState({});
 
   const onSelectedCourse = (id) => {
     setDetailData(data.find((item) => item.id === id));
     setIsShowModal(true);
-  };
-
-  const onSelectEditCourse = (id) => {
-    setSelectedItem(data.find((item) => item.id === id));
   };
 
   return (
@@ -59,7 +63,7 @@ export const CourseTable = ({ data, onDelete, setSelectedItem }) => {
                         </Button>
 
                         <Button
-                          onClick={() => onSelectEditCourse(d.id)}
+                          onClick={() => onEdit(d.id, entity)}
                           className="mx-2 text-blue-400"
                           variant="icon"
                         >

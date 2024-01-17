@@ -6,45 +6,45 @@ import { X } from "lucide-react";
 
 export const ChapterForm = ({
   index,
-  chapForm,
+  form,
   handleFormChange,
-  setForm,
+  setNestedForm,
   removeChapter,
-  handleLessonFormChange,
+  nestedForm,
 }) => {
   const onAddLesson = () => {
     const newLesson = {
       id: uuid(),
-      name: "",
+      lname: "",
       content: "",
     };
 
-    setForm((prev) => {
-      const chapterList = prev.chapters.map((chapter, cindex) =>
-        cindex === index
-          ? { ...chapter, lessons: [...chapter.lessons, newLesson] }
-          : chapter
-      );
+    setNestedForm((prev) => {
+      const chapterList = prev.chapters.map((chapter, cindex) => {
+        if (cindex === index) {
+          return { ...chapter, lessons: [...chapter.lessons, newLesson] };
+        }
+        return chapter;
+      });
       return { ...prev, chapters: chapterList };
     });
   };
 
   const removeLesson = (chapIndex, lessIndex) => {
-    setForm((prevForm) => {
-      const updatedChapters = [...prevForm.chapters];
-      const updatedLessons = [...updatedChapters[chapIndex].lessons];
+    console.log(chapIndex, lessIndex);
 
-      updatedLessons.splice(lessIndex, 1);
+    let lessonLists = [...nestedForm[chapIndex].lessons];
 
-      updatedChapters[chapIndex] = {
-        ...updatedChapters[chapIndex],
-        lessons: updatedLessons,
-      };
+    lessonLists.splice(lessIndex, 1);
 
-      return {
-        ...prevForm,
-        chapters: updatedChapters,
-      };
+    setNestedForm((prev) => {
+      const chapterList = prev.map((chapter, index) => {
+        if (chapIndex === index) {
+          return { ...chapter, lessons: lessonLists };
+        }
+        return chapter;
+      });
+      return chapterList;
     });
   };
 
@@ -58,14 +58,14 @@ export const ChapterForm = ({
       <div className=" gap-10">
         <TextInput
           onChange={(e) => handleFormChange(e, index)}
-          name="name"
-          value={chapForm.name}
+          name="cname"
+          value={form.name}
           className="w-full"
           label="Name"
         />
         <TextArea
-          name="summarize"
-          value={chapForm.summarize}
+          name="csummarize"
+          value={form.summarize}
           onChange={(e) => handleFormChange(e, index)}
           className="w-full"
           label="Summarize"
@@ -74,14 +74,14 @@ export const ChapterForm = ({
       <div className="my-2 flex justify-between mb-2">
         <div className=" text-xl font-semibold mb-4">Lesson</div>
       </div>
-      {chapForm?.lessons?.map((lesson, i) => (
+      {form?.lessons?.map((lesson, i) => (
         <LessonForm
           key={i}
           form={lesson}
           lessIndex={i}
           chapIndex={index}
+          handleFormChange={handleFormChange}
           removeLesson={removeLesson}
-          handleLessonFormChange={handleLessonFormChange}
         />
       ))}
       <div className="flex items-center justify-center">

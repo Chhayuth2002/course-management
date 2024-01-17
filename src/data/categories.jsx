@@ -1,9 +1,14 @@
-const categoryData = [
-  { id: "cat-1234", name: "Programming", code: "PROG" },
-  { id: "cat-2234", name: "Mathematics", code: "MATH" },
-  { id: "cat-3234", name: "Science", code: "SCI" },
-  { id: "cat-4234", name: "Language Arts", code: "LA" },
-  // Add more categories as needed
-];
+// ESM
+import { faker } from "@faker-js/faker";
+
+function createRandomCategory() {
+  return {
+    id: faker.string.uuid(),
+    name: faker.internet.userName(),
+    code: faker.internet.userName(),
+  };
+}
+
+const categoryData = Array.from({ length: 5 }, createRandomCategory);
 
 export default categoryData;

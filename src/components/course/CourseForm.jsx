@@ -18,7 +18,7 @@ const initValue = {
       lessons: [
         {
           id: uuid(),
-          name: "",
+          lname: "",
           content: "",
         },
       ],

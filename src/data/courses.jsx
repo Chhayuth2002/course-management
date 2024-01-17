@@ -1,85 +1,53 @@
-import uuid from "react-uuid";
+// ESM
+import { faker } from "@faker-js/faker";
 
-const courseData = [
-  {
-    id: uuid(),
-    name: "Web Development Basics",
-    summarize: "Learn the fundamentals of web development.",
-    category_id: "cat-1234",
-    chapters: [
-      {
-        id: uuid(),
-        name: "Introduction to HTML",
-        summarize: "Understanding the basics of HTML.",
-        lessons: [
-          {
-            id: uuid(),
-            name: "HTML Structure",
-            content:
-              "Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque sint neque id rem magnam, alias optio temporibus quos vel quis esse similique asperiores obcaecati. Labore nobis temporibus exercitationem ut dicta!",
-          },
-          {
-            id: uuid(),
-            name: "HTML Tags",
-            content:
-              "Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque sint neque id rem magnam, alias optio temporibus quos vel quis esse similique asperiores obcaecati. Labore nobis temporibus exercitationem ut dicta!",
-          },
-          // Add more lessons as needed
-        ],
-      },
-      {
-        id: uuid(),
-        name: "Introduction to CSS",
-        summarize: "Styling web pages with CSS.",
-        lessons: [
-          {
-            id: uuid(),
-            name: "CSS Selectors",
-            content:
-              "Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque sint neque id rem magnam, alias optio temporibus quos vel quis esse similique asperiores obcaecati. Labore nobis temporibus exercitationem ut dicta!",
-          },
-          {
-            id: uuid(),
-            name: "CSS Box Model",
-            content:
-              "Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque sint neque id rem magnam, alias optio temporibus quos vel quis esse similique asperiores obcaecati. Labore nobis temporibus exercitationem ut dicta!",
-          },
-          // Add more lessons as needed
-        ],
-      },
-      // Add more chapters as needed
-    ],
-  },
-  {
-    id: uuid(),
-    name: "JavaScript Fundamentals",
-    summarize: "Introduction to programming with JavaScript.",
-    category_id: "cat-2234",
-    chapters: [
-      {
-        id: uuid(),
-        name: "Basic JavaScript Syntax",
-        summarize: "Understanding the basics of JavaScript syntax.",
-        lessons: [
-          {
-            id: uuid(),
-            name: "Variables and Data Types",
-            content:
-              "Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque sint neque id rem magnam, alias optio temporibus quos vel quis esse similique asperiores obcaecati. Labore nobis temporibus exercitationem ut dicta!",
-          },
-          {
-            id: uuid(),
-            name: "Control Flow",
-            content:
-              "Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque sint neque id rem magnam, alias optio temporibus quos vel quis esse similique asperiores obcaecati. Labore nobis temporibus exercitationem ut dicta!",
-          },
-          // Add more lessons as needed
-        ],
-      },
-      // Add more chapters as needed
-    ],
-  },
-  // Add more courses as needed
-];
+// Function to generate random lesson data
+function createRandomLesson() {
+  return {
+    id: faker.string.uuid(),
+    lname: faker.internet.userName(),
+    content: faker.lorem.paragraph(),
+  };
+}
 
-export default courseData;
+// Function to generate a random number within a range
+function getRandomNumber(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+// Function to generate random chapter data with lessons
+function createRandomChapter() {
+  const numberOfLessons = getRandomNumber(4, 6);
+  const lessons = Array.from({ length: numberOfLessons }, createRandomLesson);
+
+  return {
+    id: faker.string.uuid(),
+    name: faker.internet.userName(),
+    summarize: faker.lorem.sentence(),
+    lessons,
+    lname: faker.internet.userName(),
+    content: faker.lorem.paragraph(),
+  };
+}
+
+// Function to generate random course data with chapters
+function createRandomCourse() {
+  const numberOfChapters = getRandomNumber(2, 4);
+  const chapters = Array.from(
+    { length: numberOfChapters },
+    createRandomChapter
+  );
+
+  return {
+    id: faker.string.uuid(),
+    name: faker.internet.userName(),
+    summarize: faker.lorem.sentence(),
+    category_id: faker.string.uuid(),
+    chapters,
+  };
+}
+
+// Generating an array of random course data
+const coursesData = Array.from({ length: 5 }, createRandomCourse);
+
+export default coursesData;

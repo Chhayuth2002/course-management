@@ -3,14 +3,13 @@ import { CategoryTable } from "./components/category/CategoryTable";
 import { CourseTable } from "./components/course/CourseTable";
 import { CourseForm } from "./components/course/CourseForm";
 
-import courseData from "./data/courses";
+import coursesData from "./data/courses";
 import categoryData from "./data/categories";
 
 import uuid from "react-uuid";
 function App() {
   const [categories, setCategories] = useState(categoryData);
-  const [courses, setCourses] = useState(courseData);
-  const [selectedItem, setSelectedItem] = useState({});
+  const [courses, setCourses] = useState(coursesData);
 
   // Category
   const onAddCategory = (form) => {
@@ -42,22 +41,17 @@ function App() {
     setCourses(courses.concat(newCourse));
   };
 
-  const onEditCourse = (form) => {
-    console.log(form);
-    setCourses((prev) =>
-      prev.map((item) => (item.id === form.id ? { ...item, ...form } : item))
-    );
-  };
-
   const onDeleteCourse = (id) => {
     setCourses((prev) => prev.filter((item) => item.id !== id));
   };
 
+  // const onEditCourse = (id) => {};
+
   const data = useMemo(() => {
     const result = courses.map((course) => {
-      const category = categories.find(
-        (category) => category.id === course.category_id
-      ).name;
+      // const category = categories.find(
+      //   (category) => category.id === course.category_id
+      // ).name;
 
       const totalLessons = course.chapters.reduce(
         (sum, chapter) => sum + chapter.lessons.length,
@@ -66,7 +60,7 @@ function App() {
 
       return {
         ...course,
-        category,
+        // category,
         total_chapters: course.chapters.length,
         total_lessons: totalLessons,
       };
@@ -76,32 +70,20 @@ function App() {
   }, [courses]);
 
   return (
-    <div className="bg-slate-300">
-      <div className="max-w-[2000px] mx-auto container ">
-        <div className="flex items-center justify-center p-10  ">
-          <div className=" text-3xl font-semibold">Mini Course Management</div>
-        </div>
-        <div className="mx-20">
-          <div className="w-full">
-            <CategoryTable
-              onAdd={onAddCategory}
-              data={categories}
-              onEdit={onEditCategory}
-              onDelete={onDeleteCategory}
-            />
-            <CourseTable
-              data={data}
-              onDelete={onDeleteCourse}
-              setSelectedItem={setSelectedItem}
-            />
-            <CourseForm
-              categoryData={categories}
-              onAdd={onAddCourse}
-              onEdit={onEditCourse}
-              selectedItem={selectedItem}
-              setSelectedItem={setSelectedItem}
-            />
-          </div>
+    <div className="max-w-[2000px] mx-auto container ">
+      <div className="flex items-center justify-center p-10 ">
+        <div className=" text-3xl font-semibold">Mini Course Management</div>
+      </div>
+      <div className="mx-20">
+        <div className="w-full">
+          <CategoryTable
+            onAdd={onAddCategory}
+            data={categories}
+            onEdit={onEditCategory}
+            onDelete={onDeleteCategory}
+          />
+          <CourseTable data={data} onDelete={onDeleteCourse} />
+          <CourseForm categoryData={categories} onAdd={onAddCourse} />
         </div>
       </div>
     </div>
