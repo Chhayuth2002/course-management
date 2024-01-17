@@ -1,4 +1,5 @@
 import ctx from "classnames";
+import { Field } from "formik";
 export const TextInput = ({
   type = "text",
   value,
@@ -12,6 +13,8 @@ export const TextInput = ({
     <div className={ctx("mb-2", className)}>
       <label className="block mb-2 text-sm font-medium ">{label}</label>
       <input
+        {...Field}
+        {...props}
         type={type}
         onChange={onChange}
         name={name}
