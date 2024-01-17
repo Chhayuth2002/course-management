@@ -50,6 +50,7 @@ export const TextArea = ({
   form: { touched, errors },
   ...props
 }) => {
+  console.log(errors)
   return (
     <>
       <div className={ctx('mb-2', className)}>

@@ -8,7 +8,7 @@ export const CourseValidate = Yup.object({
     .min(3, "Course summary must be at least 3")
     .required("Course summary is required"),
   category_id: Yup.string().required("Category is required"),
-  tags: Yup.string().required("Tag is required"),
+  // tags: Yup.string().required("Tag is required"),
   chapters: Yup.array().of(
     Yup.object().shape({
       name: Yup.string()

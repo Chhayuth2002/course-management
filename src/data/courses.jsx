@@ -4,13 +4,13 @@ const courseData = [
   {
     id: uuid(),
     name: "Web Development Basics",
-    summarize: "Learn the fundamentals of web development.",
+    summary: "Learn the fundamentals of web development.",
     category_id: "cat-1234",
     chapters: [
       {
         id: uuid(),
         name: "Introduction to HTML",
-        summarize: "Understanding the basics of HTML.",
+        summary: "Understanding the basics of HTML.",
         lessons: [
           {
             id: uuid(),
@@ -30,7 +30,7 @@ const courseData = [
       {
         id: uuid(),
         name: "Introduction to CSS",
-        summarize: "Styling web pages with CSS.",
+        summary: "Styling web pages with CSS.",
         lessons: [
           {
             id: uuid(),
@@ -53,13 +53,13 @@ const courseData = [
   {
     id: uuid(),
     name: "JavaScript Fundamentals",
-    summarize: "Introduction to programming with JavaScript.",
+    summary: "Introduction to programming with JavaScript.",
     category_id: "cat-2234",
     chapters: [
       {
         id: uuid(),
         name: "Basic JavaScript Syntax",
-        summarize: "Understanding the basics of JavaScript syntax.",
+        summary: "Understanding the basics of JavaScript syntax.",
         lessons: [
           {
             id: uuid(),

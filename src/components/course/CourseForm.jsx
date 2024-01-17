@@ -1,9 +1,9 @@
 import { SelectInput, TextArea, TextInput } from '../Input'
 import { Button } from '../Button'
 import { FieldArray, Formik, Form, Field } from 'formik'
-import uuid from 'react-uuid'
 import { CourseValidate } from '../../schemas'
 import { X } from 'lucide-react'
+import uuid from 'react-uuid'
 
 const initValue = {
   name: '',
@@ -42,6 +42,7 @@ export const CourseForm = ({
             onEdit(values)
             setSelectedItem({})
           } else {
+          console.log(values)
             onAdd(values)
           }
           actions.resetForm()
@@ -84,7 +85,7 @@ export const CourseForm = ({
                     <>
                       <div className='grid grid-cols-2 gap-3 '>
                         {values.chapters?.map((chapterForm, chapterIndex) => (
-                          <>
+                          <div key={chapterIndex}>
                             <div className='shadow-lg rounded-md border p-5'>
                               <div className=' items-end justify-end flex'>
                                 <Button
@@ -95,7 +96,7 @@ export const CourseForm = ({
                                   <X />
                                 </Button>
                               </div>
-                              <div className=' gap-10'>
+                              <div className='gap-10'>
                                 <Field
                                   label='Name'
                                   className='w-full'
@@ -177,7 +178,7 @@ export const CourseForm = ({
                                 )}
                               </FieldArray>
                             </div>
-                          </>
+                          </div>
                         ))}
                       </div>
                       <div className=' flex items-center justify-center p-2 '>
