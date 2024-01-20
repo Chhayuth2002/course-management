@@ -1,24 +1,30 @@
 import { Button } from '../Button'
 import { FieldArray, Formik, Form, Field } from 'formik'
-import uuid from 'react-uuid'
 import { CourseValidate } from '../../schemas'
-import { TextAreaField, TextInputField, ReactSelect } from '../InputField'
+import {
+  TextAreaField,
+  TextInputField,
+  ReactSelect,
+  MultiSelect,
+  UploadFile
+} from '../InputField'
 import { X } from 'lucide-react'
-
 const initValue = {
   name: '',
-  category_id: [],
-  summarize: '',
+  category_id: '',
+  image_url: '',
+  summary: '',
+  tags: [],
+  removeTag: [],
   chapters: [
     {
-      id: uuid(),
       name: '',
-      summarize: '',
+      summary: '',
       lessons: [
         {
-          id: uuid(),
           name: '',
-          content: ''
+          content: '',
+          image_url: ''
         }
       ]
     }
@@ -27,11 +33,52 @@ const initValue = {
 
 export const CourseForm = ({
   categoryData,
+  tagData,
   onAdd,
   onEdit,
   selectedItem,
   setSelectedItem
 }) => {
+  const onRemoveChapter = (setValues, chapterIndex) => {
+    setValues(prev => {
+      const updatedChapters = prev.chapters.map((chapter, index) =>
+        index === chapterIndex ? { ...chapter, _delete: true } : chapter
+      )
+      return {
+        ...prev,
+        chapters: updatedChapters
+      }
+    })
+  }
+
+  const onRemoveLesson = (setValues, chapterIndex, lessonIndex) => {
+    setValues(prev => {
+      const updatedChapters = prev.chapters.map((chapter, cIndex) => {
+        if (cIndex === chapterIndex) {
+          return {
+            ...chapter,
+            lessons: chapter.lessons.map((lesson, lIndex) => {
+              if (lIndex === lessonIndex) {
+                return {
+                  ...lesson,
+                  _delete: true
+                }
+              } else {
+                return lesson
+              }
+            })
+          }
+        } else {
+          return chapter
+        }
+      })
+      return {
+        ...prev,
+        chapters: updatedChapters
+      }
+    })
+  }
+
   return (
     <div className='shadow-xl bg-white p-3 mb-20 rounded-md '>
       <Formik
@@ -48,7 +95,7 @@ export const CourseForm = ({
         }}
         validationSchema={CourseValidate}
       >
-        {({ values, resetForm, dirty }) => {
+        {({ values, dirty, resetForm, setValues }) => {
           return (
             <Form>
               <div className=' text-xl font-semibold mb-4'>New course</div>
@@ -68,15 +115,17 @@ export const CourseForm = ({
                       name='category_id'
                       component={ReactSelect}
                       options={categoryData}
-                      isMulti={true}
+                      defaultValue={selectedItem.category_id}
                     />
                   </div>
                 </div>
+                <Field name='tags' component={MultiSelect} options={tagData} />
                 <Field
-                  name='summarize'
+                  name='summary'
                   component={TextAreaField}
-                  placeholder='Course summarize'
+                  placeholder='Course summary'
                 />
+                <Field name='image_url' component={UploadFile} />
                 <div className='mt-4 mb-2 flex justify-between'>
                   <div className='text-xl font-semibold'>Chapter</div>
                 </div>
@@ -86,105 +135,126 @@ export const CourseForm = ({
                   {({ push, remove }) => (
                     <>
                       <div className='grid grid-cols-2 gap-3 '>
-                        {values.chapters?.map((chapterForm, chapterIndex) => (
-                          <div
-                            key={chapterForm.id}
-                            className='shadow-lg rounded-md border p-3'
-                          >
-                            <div className=' items-end justify-end flex mb-2'>
-                              <Button
-                                onClick={() => remove(chapterIndex)}
-                                variant='icon'
-                                type='button'
-                              >
-                                <X />
-                              </Button>
-                            </div>
-                            <div className=' gap-10'>
-                              <Field
-                                name={`chapters.${chapterIndex}.name`}
-                                placeholder='Chapter name'
-                                component={TextInputField}
-                              />
-                              <Field
-                                name={`chapters.${chapterIndex}.summarize`}
-                                placeholder='Chapter Summarize'
-                                component={TextAreaField}
-                              />
-                            </div>
-                            <div className='mt-4 mb-2 flex justify-between '>
-                              <div className=' text-xl font-semibold'>
-                                Lesson
-                              </div>
-                            </div>
-
-                            {/* Lesson Form */}
-                            <FieldArray
-                              name={`chapters.${chapterIndex}.lessons`}
+                        {values.chapters
+                          .filter(chapterForm => !chapterForm._delete)
+                          .map((chapterForm, chapterIndex) => (
+                            <div
+                              key={chapterIndex}
+                              className='shadow-lg rounded-md border p-3'
                             >
-                              {({ push, remove }) => (
-                                <>
-                                  {chapterForm.lessons.map(
-                                    (lessonForm, lessonIndex) => (
-                                      <div
-                                        key={lessonForm.id}
-                                        className='gap-2 my-3'
-                                      >
-                                        <div className='shadow-lg rounded-md border p-2'>
-                                          <div className=' items-end justify-end flex mb-2'>
-                                            <Button
-                                              onClick={() =>
-                                                remove(lessonIndex)
-                                              }
-                                              variant='icon'
-                                            >
-                                              <X />
-                                            </Button>
-                                          </div>
-                                          <div className=' gap-2'>
-                                            <Field
-                                              name={`chapters.${chapterIndex}.lessons.${lessonIndex}.name`}
-                                              placeholder='Lesson name'
-                                              component={TextInputField}
-                                            />
-                                            <Field
-                                              name={`chapters.${chapterIndex}.lessons.${lessonIndex}.content`}
-                                              placeholder='Lesson content'
-                                              component={TextAreaField}
-                                            />
+                              <div className=' items-end justify-end flex mb-2'>
+                                <Button
+                                  onClick={() =>
+                                    selectedItem.id
+                                      ? onRemoveChapter(setValues, chapterIndex)
+                                      : remove(chapterIndex)
+                                  }
+                                  variant='icon'
+                                  type='button'
+                                >
+                                  <X />
+                                </Button>
+                              </div>
+                              <div className=' gap-10'>
+                                <Field
+                                  name={`chapters.${chapterIndex}.name`}
+                                  placeholder='Chapter name'
+                                  component={TextInputField}
+                                />
+                                <Field
+                                  name={`chapters.${chapterIndex}.summary`}
+                                  placeholder='Chapter summary'
+                                  component={TextAreaField}
+                                />
+                              </div>
+                              <div className='mt-4 mb-2 flex justify-between '>
+                                <div className=' text-xl font-semibold'>
+                                  Lesson
+                                </div>
+                              </div>
+
+                              {/* Lesson Form */}
+                              <FieldArray
+                                name={`chapters.${chapterIndex}.lessons`}
+                              >
+                                {({ push, remove }) => (
+                                  <>
+                                    {chapterForm.lessons
+                                      .filter(lesson => !lesson._delete)
+                                      .map((lessonForm, lessonIndex) => (
+                                        <div
+                                          key={lessonIndex}
+                                          className='gap-2 my-3'
+                                        >
+                                          <div className='shadow-lg rounded-md border p-2'>
+                                            <div className=' items-end justify-end flex mb-2'>
+                                              <Button
+                                                onClick={() =>
+                                                  selectedItem.id
+                                                    ? onRemoveLesson(
+                                                        setValues,
+                                                        chapterIndex,
+                                                        lessonIndex
+                                                      )
+                                                    : remove(lessonIndex)
+                                                }
+                                                variant='icon'
+                                              >
+                                                <X />
+                                              </Button>
+                                            </div>
+                                            <div className=' gap-2'>
+                                              <Field
+                                                name={`chapters.${chapterIndex}.lessons.${lessonIndex}.name`}
+                                                placeholder='Lesson name'
+                                                component={TextInputField}
+                                              />
+                                              <Field
+                                                name={`chapters.${chapterIndex}.lessons.${lessonIndex}.content`}
+                                                placeholder='Lesson content'
+                                                component={TextAreaField}
+                                              />
+                                              <Field
+                                                name={`chapters.${chapterIndex}.lessons.${lessonIndex}.image_url`}
+                                                component={UploadFile}
+                                              />
+                                            </div>
                                           </div>
                                         </div>
-                                      </div>
-                                    )
-                                  )}
-                                  <div className='flex items-center justify-center'>
-                                    <Button
-                                      onClick={() =>
-                                        push({
-                                          id: uuid(),
-                                          name: '',
-                                          content: ''
-                                        })
-                                      }
-                                    >
-                                      Add new lesson
-                                    </Button>
-                                  </div>
-                                </>
-                              )}
-                            </FieldArray>
-                          </div>
-                        ))}
+                                      ))}
+                                    <div className='flex items-center justify-center'>
+                                      <Button
+                                        onClick={() =>
+                                          push({
+                                            name: '',
+                                            content: '',
+                                            image_url: ''
+                                          })
+                                        }
+                                      >
+                                        Add new lesson
+                                      </Button>
+                                    </div>
+                                  </>
+                                )}
+                              </FieldArray>
+                            </div>
+                          ))}
                       </div>
                       <div className='flex items-center justify-center p-2 '>
                         <Button
                           type='button'
                           onClick={() =>
                             push({
-                              id: uuid(),
                               name: '',
-                              summarize: '',
-                              lessons: [{ id: uuid(), name: '', content: '' }]
+                              summary: '',
+                              lessons: [
+                                {
+                                  name: '',
+                                  content: '',
+                                  image_url: ''
+                                }
+                              ]
                             })
                           }
                         >
@@ -199,7 +269,14 @@ export const CourseForm = ({
                 <Button className='mr-2' type='submit' isDisable={!dirty}>
                   {!selectedItem.id ? 'Save' : 'Update'}
                 </Button>
-                <Button onClick={() => resetForm()}>Reset</Button>
+                <Button onClick={() => resetForm()} className='mr-2'>
+                  {!selectedItem.id ? 'Reset' : 'Reset to original'}
+                </Button>
+                {selectedItem.id && (
+                  <Button onClick={() => setSelectedItem({})}>
+                    Clear edit
+                  </Button>
+                )}
               </div>
             </Form>
           )
